@@ -716,7 +716,8 @@ body {
    PASO 4 — INVITACIÓN
    ============================================================ */
 .invite-step {
-  background: linear-gradient(155deg, #0b0222 0%, #190840 100%);
+  /* background: linear-gradient(155deg, #0b0222 0%, #190840 100%); */
+  background-image: url("https://www.elsalvadorlegis.com/wp-content/uploads/2020/04/ElPrincipito1.jpg");
 }
 .invite-inner {
   gap: 1.4rem;

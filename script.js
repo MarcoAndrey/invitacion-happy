@@ -11,7 +11,7 @@
 
 const invitationData = {
   // 🍽️  Nombre del restaurante
-  restaurant: "Cargando........",
+  restaurant: "Procesando...",
 
   // 📅  Fecha del evento (texto libre)
   date: "19 de Septiembre",
@@ -24,6 +24,10 @@ const invitationData = {
 
   // 📍  Dirección completa
   address: "Bogotá, Colombia",
+
+  // 🔐  Nombre exacto que puede ingresar a la invitación
+  //     (escríbelo tal cual, sin importar mayúsculas/tildes)
+  allowedName: "Maria Fernanda",
 };
 
 /*
@@ -99,23 +103,49 @@ function setText(id, value) {
 function handleStart() {
   const input = document.getElementById("nameInput");
   const name = input ? input.value.trim() : "";
+  const error = document.getElementById("nameError");
 
+  /* 1. Campo vacío */
   if (!name) {
-    /* Mostrar error con animación */
-    const error = document.getElementById("nameError");
-    if (error) error.classList.add("visible");
-    input.classList.add("shake");
-    input.focus();
-    setTimeout(() => input.classList.remove("shake"), 500);
+    showNameError("Primero dime tu nombre 😜", input, error);
     return;
   }
 
-  /* Guardar nombre y actualizar DOM */
-  guestName = name;
+  /* 2. Verificar que el nombre coincida con el permitido
+        (ignoramos mayúsculas, minúsculas y tildes) */
+  const normalize = (s) =>
+    s
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+  const nameOk = normalize(name) === normalize(invitationData.allowedName);
+
+  if (!nameOk) {
+    showNameError("Esta invitación no es para ti... 🙈", input, error);
+    return;
+  }
+
+  /* 3. Nombre correcto — continuar */
+  if (error) error.classList.remove("visible");
+  guestName =
+    invitationData.allowedName; /* usamos el nombre exacto de la config */
   document.getElementById("nameError")?.classList.remove("visible");
   populateGuestName();
 
   showStep(2);
+}
+
+/* Muestra el error del campo de nombre con shake */
+function showNameError(msg, input, errorEl) {
+  if (errorEl) {
+    errorEl.textContent = msg;
+    errorEl.classList.add("visible");
+  }
+  if (input) {
+    input.classList.add("shake");
+    input.focus();
+    setTimeout(() => input.classList.remove("shake"), 500);
+  }
 }
 
 /* ============================================================

@@ -11,7 +11,7 @@
 
 const invitationData = {
   // 🍽️  Nombre del restaurante
-  restaurant: "Procesando...",
+  restaurant: "El Universo Del Principito",
 
   // 📅  Fecha del evento (texto libre)
   date: "19 de Septiembre",
